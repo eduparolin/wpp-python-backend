@@ -21,6 +21,7 @@ from Crypto.Hash import SHA256;
 import hashlib;
 import hmac;
 import traceback;
+import ssl;
 
 import websocket;
 import curve25519;
@@ -250,6 +251,7 @@ class WhatsAppWebClient:
                                                on_open=lambda ws: self.onOpen(ws),
                                                on_close=lambda ws: self.onClose(ws),
                                                header={"Origin: https://web.whatsapp.com"});
+	self.activeWs.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE});
 
         self.websocketThread = Thread(target=self.activeWs.run_forever);
         self.websocketThread.daemon = True;
